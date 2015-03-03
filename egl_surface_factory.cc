@@ -102,7 +102,12 @@ class OzoneEgl : public ui::SurfaceOzoneEGL {
     return native_window_; 
   }
 
-  virtual bool OnSwapBuffers() override 
+  virtual bool OnSwapBuffers() override
+  {
+    return true;
+  }
+
+  virtual bool OnSwapBuffersAsync(const SwapCompletionCallback& callback) override
   { 
     return true; 
   }
