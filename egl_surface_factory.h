@@ -24,8 +24,6 @@ class SurfaceFactoryEgl : public ui::SurfaceFactoryOzone {
   void DestroySingleWindow();
 
   // SurfaceFactoryOzone:
-  virtual HardwareState InitializeHardware() OVERRIDE;
-  virtual void ShutdownHardware() OVERRIDE;
   virtual intptr_t GetNativeDisplay() OVERRIDE;
   virtual gfx::AcceleratedWidget GetAcceleratedWidget() OVERRIDE;
   virtual scoped_ptr<ui::SurfaceOzoneEGL> CreateEGLSurfaceForWidget(

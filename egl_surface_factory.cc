@@ -170,14 +170,6 @@ void SurfaceFactoryEgl::DestroySingleWindow() {
   init_ = false;
 }
 
-SurfaceFactoryEgl::HardwareState
-SurfaceFactoryEgl::InitializeHardware() {
-  return INITIALIZED;
-}
-
-void SurfaceFactoryEgl::ShutdownHardware() {
-}
-
 intptr_t SurfaceFactoryEgl::GetNativeDisplay() {
   return (intptr_t)ozone_egl_getNativedisp();
 }
