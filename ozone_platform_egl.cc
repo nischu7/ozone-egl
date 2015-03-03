@@ -26,28 +26,28 @@ class OzonePlatformEgl : public OzonePlatform {
   }
 
   // OzonePlatform:
-  virtual ui::SurfaceFactoryOzone* GetSurfaceFactoryOzone() OVERRIDE {
+  virtual ui::SurfaceFactoryOzone* GetSurfaceFactoryOzone() override {
     return surface_factory_ozone_.get();
   }
-  virtual EventFactoryOzone* GetEventFactoryOzone() OVERRIDE {
+  virtual EventFactoryOzone* GetEventFactoryOzone() override {
     return event_factory_ozone_.get();
   }
-  virtual CursorFactoryOzone* GetCursorFactoryOzone() OVERRIDE {
+  virtual CursorFactoryOzone* GetCursorFactoryOzone() override {
     return cursor_factory_ozone_.get();
   }
-  virtual GpuPlatformSupport* GetGpuPlatformSupport() OVERRIDE {
+  virtual GpuPlatformSupport* GetGpuPlatformSupport() override {
     return gpu_platform_support_.get();
   }
-  virtual GpuPlatformSupportHost* GetGpuPlatformSupportHost() OVERRIDE {
+  virtual GpuPlatformSupportHost* GetGpuPlatformSupportHost() override {
     return gpu_platform_support_host_.get();
   }
 #if defined(OS_CHROMEOS)
   virtual scoped_ptr<NativeDisplayDelegate> CreateNativeDisplayDelegate()
-      OVERRIDE {
+      override {
     return scoped_ptr<NativeDisplayDelegate>(new NativeDisplayDelegateOzone());
   }
 #endif
-  virtual void InitializeUI() OVERRIDE {
+  virtual void InitializeUI() override {
    device_manager_ = CreateDeviceManager();
    event_factory_ozone_.reset(
         new EventFactoryEvdev(NULL, device_manager_.get()));
@@ -56,7 +56,7 @@ class OzonePlatformEgl : public OzonePlatform {
     gpu_platform_support_host_.reset(CreateStubGpuPlatformSupportHost());
   }
 
-  virtual void InitializeGPU() OVERRIDE {
+  virtual void InitializeGPU() override {
     surface_factory_ozone_.reset(new SurfaceFactoryEgl());
     cursor_factory_ozone_.reset(new CursorFactoryOzone());
     gpu_platform_support_.reset(CreateStubGpuPlatformSupport());

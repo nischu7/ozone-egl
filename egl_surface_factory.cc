@@ -33,13 +33,13 @@ class EglOzoneCanvas: public ui::SurfaceOzoneCanvas {
   EglOzoneCanvas();
   virtual ~EglOzoneCanvas();
   // SurfaceOzoneCanvas overrides:
-  virtual void ResizeCanvas(const gfx::Size& viewport_size) OVERRIDE;
-  virtual skia::RefPtr<SkCanvas> GetCanvas() OVERRIDE {
+  virtual void ResizeCanvas(const gfx::Size& viewport_size) override;
+  virtual skia::RefPtr<SkCanvas> GetCanvas() override {
     return skia::SharePtr<SkCanvas>(surface_->getCanvas());
   }
-  virtual void PresentCanvas(const gfx::Rect& damage) OVERRIDE;
+  virtual void PresentCanvas(const gfx::Rect& damage) override;
   
-  virtual scoped_ptr<gfx::VSyncProvider> CreateVSyncProvider() OVERRIDE {
+  virtual scoped_ptr<gfx::VSyncProvider> CreateVSyncProvider() override {
     return scoped_ptr<gfx::VSyncProvider>();
   }
 
@@ -97,22 +97,22 @@ class OzoneEgl : public ui::SurfaceOzoneEGL {
      native_window_=0;
   }
 
-  virtual intptr_t GetNativeWindow() OVERRIDE 
+  virtual intptr_t GetNativeWindow() override 
   { 
     return native_window_; 
   }
 
-  virtual bool OnSwapBuffers() OVERRIDE 
+  virtual bool OnSwapBuffers() override 
   { 
     return true; 
   }
 
-  virtual bool ResizeNativeWindow(const gfx::Size& viewport_size) OVERRIDE {
+  virtual bool ResizeNativeWindow(const gfx::Size& viewport_size) override {
     return true;
   }
 
 
-  virtual scoped_ptr<gfx::VSyncProvider> CreateVSyncProvider() OVERRIDE {
+  virtual scoped_ptr<gfx::VSyncProvider> CreateVSyncProvider() override {
     return scoped_ptr<gfx::VSyncProvider>();
   }
 

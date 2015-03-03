@@ -24,17 +24,17 @@ class SurfaceFactoryEgl : public ui::SurfaceFactoryOzone {
   void DestroySingleWindow();
 
   // SurfaceFactoryOzone:
-  virtual intptr_t GetNativeDisplay() OVERRIDE;
-  virtual gfx::AcceleratedWidget GetAcceleratedWidget() OVERRIDE;
+  virtual intptr_t GetNativeDisplay() override;
+  virtual gfx::AcceleratedWidget GetAcceleratedWidget() override;
   virtual scoped_ptr<ui::SurfaceOzoneEGL> CreateEGLSurfaceForWidget(
-      gfx::AcceleratedWidget widget) OVERRIDE;
+      gfx::AcceleratedWidget widget) override;
   virtual const int32* GetEGLSurfaceProperties(
-      const int32* desired_list) OVERRIDE;
+      const int32* desired_list) override;
   virtual bool LoadEGLGLES2Bindings(
       AddGLLibraryCallback add_gl_library,
-      SetGLGetProcAddressProcCallback set_gl_get_proc_address) OVERRIDE;
+      SetGLGetProcAddressProcCallback set_gl_get_proc_address) override;
   virtual scoped_ptr<ui::SurfaceOzoneCanvas> CreateCanvasForWidget(
-      gfx::AcceleratedWidget widget) OVERRIDE;
+      gfx::AcceleratedWidget widget) override;
 
  private:
     bool init_;
