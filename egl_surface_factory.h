@@ -7,6 +7,8 @@
 
 #include "base/memory/scoped_ptr.h"
 #include "ui/ozone/public/surface_factory_ozone.h"
+#include "ui/ozone/platform/egl/egl_window.h"
+
 
 namespace gfx {
 class SurfaceOzone;

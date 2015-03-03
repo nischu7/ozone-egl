@@ -33,6 +33,8 @@
         'ozone_platform_egl.cc',
         'egl_wrapper.cc',
         'egl_wrapper.h',
+        'egl_window.cc',
+        'egl_window.h',
       ],
       'link_settings': {
             'libraries': [

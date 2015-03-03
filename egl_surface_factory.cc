@@ -204,12 +204,10 @@ const int32* SurfaceFactoryEgl::GetEGLSurfaceProperties(
   return ozone_egl_getConfigAttribs();
 }
 
-
 scoped_ptr<ui::SurfaceOzoneCanvas> SurfaceFactoryEgl::CreateCanvasForWidget(
       gfx::AcceleratedWidget widget){
     LOG(ERROR) << "-CreateCanvasForWidget-";
-  scoped_ptr<EglOzoneCanvas> canvas(new EglOzoneCanvas());
-  return canvas.PassAs<ui::SurfaceOzoneCanvas>();
+  return make_scoped_ptr<SurfaceOzoneCanvas>(new EglOzoneCanvas());
 }
 
 }  // namespace ui
