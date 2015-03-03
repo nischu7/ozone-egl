@@ -17,23 +17,23 @@ namespace ui {
 class SurfaceFactoryEgl : public ui::SurfaceFactoryOzone {
  public:
   SurfaceFactoryEgl();
-  virtual ~SurfaceFactoryEgl();
+  ~SurfaceFactoryEgl() override  ;
 
   // Create the window.
   bool CreateSingleWindow();
   void DestroySingleWindow();
 
   // SurfaceFactoryOzone:
-  virtual intptr_t GetNativeDisplay() override;
+  intptr_t GetNativeDisplay() override;
   //virtual gfx::AcceleratedWidget GetAcceleratedWidget() override;
-  virtual scoped_ptr<ui::SurfaceOzoneEGL> CreateEGLSurfaceForWidget(
+  scoped_ptr<ui::SurfaceOzoneEGL> CreateEGLSurfaceForWidget(
       gfx::AcceleratedWidget widget) override;
-  virtual const int32* GetEGLSurfaceProperties(
+  const int32* GetEGLSurfaceProperties(
       const int32* desired_list) override;
-  virtual bool LoadEGLGLES2Bindings(
+  bool LoadEGLGLES2Bindings(
       AddGLLibraryCallback add_gl_library,
       SetGLGetProcAddressProcCallback set_gl_get_proc_address) override;
-  virtual scoped_ptr<ui::SurfaceOzoneCanvas> CreateCanvasForWidget(
+  scoped_ptr<ui::SurfaceOzoneCanvas> CreateCanvasForWidget(
       gfx::AcceleratedWidget widget) override;
 
  private:

@@ -31,15 +31,15 @@ namespace ui {
 class EglOzoneCanvas: public ui::SurfaceOzoneCanvas {
  public:
   EglOzoneCanvas();
-  virtual ~EglOzoneCanvas();
+  ~EglOzoneCanvas() override  ;
   // SurfaceOzoneCanvas overrides:
-  virtual void ResizeCanvas(const gfx::Size& viewport_size) override;
+  void ResizeCanvas(const gfx::Size& viewport_size) override;
   //virtual skia::RefPtr<SkCanvas> GetCanvas() override {
   //  return skia::SharePtr<SkCanvas>(surface_->getCanvas());
   //}
-  virtual void PresentCanvas(const gfx::Rect& damage) override;
+  void PresentCanvas(const gfx::Rect& damage) override;
   
-  virtual scoped_ptr<gfx::VSyncProvider> CreateVSyncProvider() override {
+  scoped_ptr<gfx::VSyncProvider> CreateVSyncProvider() override {
     return scoped_ptr<gfx::VSyncProvider>();
   }
   skia::RefPtr<SkSurface> GetSurface() override { return surface_; }
@@ -94,31 +94,31 @@ class OzoneEgl : public ui::SurfaceOzoneEGL {
   OzoneEgl(gfx::AcceleratedWidget window_id){
      native_window_ = window_id;
   }
-  virtual ~OzoneEgl() {
+  ~OzoneEgl() override {
      native_window_=0;
   }
 
-  virtual intptr_t GetNativeWindow() override 
+  intptr_t GetNativeWindow() override 
   { 
     return native_window_; 
   }
 
-  virtual bool OnSwapBuffers() override
+  bool OnSwapBuffers() override
   {
     return true;
   }
 
-  virtual bool OnSwapBuffersAsync(const SwapCompletionCallback& callback) override
+  bool OnSwapBuffersAsync(const SwapCompletionCallback& callback) override
   { 
     return true; 
   }
 
-  virtual bool ResizeNativeWindow(const gfx::Size& viewport_size) override {
+  bool ResizeNativeWindow(const gfx::Size& viewport_size) override {
     return true;
   }
 
 
-  virtual scoped_ptr<gfx::VSyncProvider> CreateVSyncProvider() override {
+  scoped_ptr<gfx::VSyncProvider> CreateVSyncProvider() override {
     return scoped_ptr<gfx::VSyncProvider>();
   }
 
