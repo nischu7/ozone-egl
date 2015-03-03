@@ -41,6 +41,24 @@ class OzonePlatformEgl : public OzonePlatform {
   virtual GpuPlatformSupportHost* GetGpuPlatformSupportHost() override {
     return gpu_platform_support_host_.get();
   }
+
+/////
+  scoped_ptr<SystemInputInjector> CreateSystemInputInjector() override {
+    return nullptr;  // no input injection support.
+  }
+  InputController* GetInputController() override {
+    return input_controller_.get(); // as in test
+  }
+  scoped_ptr<NativeDisplayDelegate> CreateNativeDisplayDelegate() override {
+    return scoped_ptr<NativeDisplayDelegate>(new NativeDisplayDelegateOzone());
+  }
+  scoped_ptr<PlatformWindow> CreatePlatformWindow(
+      PlatformWindowDelegate* delegate,
+      const gfx::Rect& bounds) override {
+    return nullptr;  // no window support ;)
+ }
+/////
+
 #if defined(OS_CHROMEOS)
   virtual scoped_ptr<NativeDisplayDelegate> CreateNativeDisplayDelegate()
       override {
