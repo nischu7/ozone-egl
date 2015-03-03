@@ -10,7 +10,7 @@
 #include "ui/ozone/public/gpu_platform_support_host.h"
 #include "ui/events/ozone/device/device_manager.h"
 #include "ui/events/ozone/evdev/event_factory_evdev.h"
-#include "ui/ozone/ozone_platform.h"
+#include "ui/ozone/public/ozone_platform.h"
 #include "egl_wrapper.h"
 
 namespace ui {
