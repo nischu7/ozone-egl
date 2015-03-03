@@ -70,7 +70,7 @@ void EglOzoneCanvas::ResizeCanvas(const gfx::Size& viewport_size)
   surface_ = skia::AdoptRef(SkSurface::NewRaster(
         SkImageInfo::Make(viewport_size.width(),
                                    viewport_size.height(),
-                                   kPMColor_SkColorType,
+                                   kN32_SkColorType,
                                    kPremul_SkAlphaType)));
   userDate_.width = viewport_size.width();
   userDate_.height = viewport_size.height();
