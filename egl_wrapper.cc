@@ -58,7 +58,7 @@ static int g_WindowHeigth=0;
 
 NativeDisplay ozone_egl_nativeCreateDisplay(void)
 {
-    return (NativeDisplay)EGL_DEFAULT_DISPLAY;
+    return (NativeDisplay)fbGetDisplayByIndex(0);
 }
 
 void ozone_egl_nativeDestroyDisplay(NativeDisplay display)
@@ -99,21 +99,11 @@ EGLint ozone_egl_setup(EGLint x, EGLint y, EGLint width, EGLint height )
         EGL_NONE
     };
 
-    g_NativeDisplay = (NativeDisplayType)ozone_egl_nativeCreateDisplay();
-    if (g_NativeDisplay < 0)
-    {
-        LOG(ERROR) << "ozone_egl_nativeCreateDisplay failed!\n";
-        return -1;
-    }
-
-    g_NativeWindow = (NativeWindowType)ozone_egl_nativeCreateWindow("egl window", width, height, 0);
-    
-    g_WindowWidth = width;
-    g_WindowHeigth = height;
-
     eglBindAPI(EGL_OPENGL_ES_API);
 
-    /* Get EGLDisplay */
+    g_NativeDisplay = (NativeDisplayType)ozone_egl_nativeCreateDisplay();
+    fbGetDisplayGeometry(g_NativeDisplay,&g_WindowWidth,&g_WindowHeigth);
+
     g_EglDisplay = eglGetDisplay(g_NativeDisplay);
 
     if (g_EglDisplay == EGL_NO_DISPLAY)
@@ -141,18 +131,19 @@ EGLint ozone_egl_setup(EGLint x, EGLint y, EGLint width, EGLint height )
         return OZONE_EGL_FAILURE;
     }
 
-
-    g_EglSurface = eglCreateWindowSurface(g_EglDisplay, configs[0], 0, NULL);
-    if (g_EglSurface == NULL)
-    {
-        LOG(ERROR) << "g_EglSurface == EGL_NO_SURFACE eglGeterror = " << eglGetError();
-        return OZONE_EGL_FAILURE;
-    }
-
     g_EglContext = eglCreateContext(g_EglDisplay, configs[0], NULL, ctxAttribs);
     if (g_EglContext == EGL_NO_CONTEXT)
     {
     	LOG(ERROR) << "Failed to get EGL Context";
+        return OZONE_EGL_FAILURE;
+    }
+
+    g_NativeWindow=fbCreateWindow(g_NativeDisplay, 0, 0, g_WindowWidth, g_WindowHeigth);
+
+    g_EglSurface = eglCreateWindowSurface(g_EglDisplay, configs[0], g_NativeWindow, NULL);
+    if (g_EglSurface == NULL)
+    {
+        LOG(ERROR) << "g_EglSurface == EGL_NO_SURFACE eglGeterror = " << eglGetError();
         return OZONE_EGL_FAILURE;
     }
 
@@ -168,6 +159,7 @@ EGLint ozone_egl_setup(EGLint x, EGLint y, EGLint width, EGLint height )
 
 int ozone_egl_destroy()
 {
+
     int s32Loop = 0;
 
     /** clean double buffer  **/
@@ -193,7 +185,7 @@ int ozone_egl_destroy()
 
     eglTerminate(g_EglDisplay);
 
-    ozone_egl_nativeDestroyWindow(g_NativeWindow);
+    //ozone_egl_nativeDestroyWindow(g_NativeWindow);
     ozone_egl_nativeDestroyDisplay(g_NativeDisplay);
 
     return OZONE_EGL_SUCCESS;
@@ -277,6 +269,7 @@ GLuint ozone_egl_loadShader ( GLenum type, const char *shaderSrc )
 }
 GLuint ozone_egl_loadProgram ( const char *vertShaderSrc, const char *fragShaderSrc )
 {
+
    GLuint vertexShader;
    GLuint fragmentShader;
    GLuint programObject;
