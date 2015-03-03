@@ -174,11 +174,11 @@ intptr_t SurfaceFactoryEgl::GetNativeDisplay() {
   return (intptr_t)ozone_egl_getNativedisp();
 }
 
-gfx::AcceleratedWidget SurfaceFactoryEgl::GetAcceleratedWidget() {
-  if (!CreateSingleWindow())
-    LOG(FATAL) << "failed to create window";
-  return (gfx::AcceleratedWidget)GetNativeDisplay();
-}
+//gfx::AcceleratedWidget SurfaceFactoryEgl::GetAcceleratedWidget() {
+//  if (!CreateSingleWindow())
+//    LOG(FATAL) << "failed to create window";
+//  return (gfx::AcceleratedWidget)GetNativeDisplay();
+//}
 
 scoped_ptr<ui::SurfaceOzoneEGL>
 SurfaceFactoryEgl::CreateEGLSurfaceForWidget(

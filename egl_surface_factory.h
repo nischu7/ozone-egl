@@ -25,7 +25,7 @@ class SurfaceFactoryEgl : public ui::SurfaceFactoryOzone {
 
   // SurfaceFactoryOzone:
   virtual intptr_t GetNativeDisplay() override;
-  virtual gfx::AcceleratedWidget GetAcceleratedWidget() override;
+  //virtual gfx::AcceleratedWidget GetAcceleratedWidget() override;
   virtual scoped_ptr<ui::SurfaceOzoneEGL> CreateEGLSurfaceForWidget(
       gfx::AcceleratedWidget widget) override;
   virtual const int32* GetEGLSurfaceProperties(

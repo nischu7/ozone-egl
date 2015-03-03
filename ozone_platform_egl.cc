@@ -29,9 +29,9 @@ class OzonePlatformEgl : public OzonePlatform {
   virtual ui::SurfaceFactoryOzone* GetSurfaceFactoryOzone() override {
     return surface_factory_ozone_.get();
   }
-  virtual EventFactoryOzone* GetEventFactoryOzone() override {
-    return event_factory_ozone_.get();
-  }
+  //virtual EventFactoryOzone* GetEventFactoryOzone() override {
+  //  return event_factory_ozone_.get();
+  //}
   virtual CursorFactoryOzone* GetCursorFactoryOzone() override {
     return cursor_factory_ozone_.get();
   }
