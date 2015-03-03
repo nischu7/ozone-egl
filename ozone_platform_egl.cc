@@ -57,7 +57,8 @@ class OzonePlatformEgl : public OzonePlatform {
   scoped_ptr<PlatformWindow> CreatePlatformWindow(
       PlatformWindowDelegate* delegate,
       const gfx::Rect& bounds) override {
-    return nullptr;  // no window support ;)
+      return  make_scoped_ptr<PlatformWindow>(
+        new eglWindow(delegate, surface_factory_ozone_.get(), bounds));
  }
 /////
 
