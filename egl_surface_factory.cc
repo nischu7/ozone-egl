@@ -42,6 +42,7 @@ class EglOzoneCanvas: public ui::SurfaceOzoneCanvas {
   virtual scoped_ptr<gfx::VSyncProvider> CreateVSyncProvider() override {
     return scoped_ptr<gfx::VSyncProvider>();
   }
+  skia::RefPtr<SkSurface> GetSurface() override { return surface_; }
 
  private: 
   skia::RefPtr<SkSurface> surface_;
