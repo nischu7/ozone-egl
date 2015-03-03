@@ -34,9 +34,9 @@ class EglOzoneCanvas: public ui::SurfaceOzoneCanvas {
   virtual ~EglOzoneCanvas();
   // SurfaceOzoneCanvas overrides:
   virtual void ResizeCanvas(const gfx::Size& viewport_size) override;
-  virtual skia::RefPtr<SkCanvas> GetCanvas() override {
-    return skia::SharePtr<SkCanvas>(surface_->getCanvas());
-  }
+  //virtual skia::RefPtr<SkCanvas> GetCanvas() override {
+  //  return skia::SharePtr<SkCanvas>(surface_->getCanvas());
+  //}
   virtual void PresentCanvas(const gfx::Rect& damage) override;
   
   virtual scoped_ptr<gfx::VSyncProvider> CreateVSyncProvider() override {
