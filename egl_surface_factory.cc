@@ -11,6 +11,7 @@
 #include "ui/gfx/skia_util.h"
 #include "ui/gfx/vsync_provider.h"
 #include "base/logging.h"
+#include "ui/ozone/common/egl_util.h"
 
 #include "egl_wrapper.h"
 
@@ -196,7 +197,8 @@ SurfaceFactoryEgl::CreateEGLSurfaceForWidget(
 bool SurfaceFactoryEgl::LoadEGLGLES2Bindings(
     AddGLLibraryCallback add_gl_library,
     SetGLGetProcAddressProcCallback set_gl_get_proc_address) { 
-  return false;
+  return LoadDefaultEGLGLES2Bindings(add_gl_library, set_gl_get_proc_address);
+  //return false;
 }
 
 const int32* SurfaceFactoryEgl::GetEGLSurfaceProperties(
@@ -206,7 +208,6 @@ const int32* SurfaceFactoryEgl::GetEGLSurfaceProperties(
 
 scoped_ptr<ui::SurfaceOzoneCanvas> SurfaceFactoryEgl::CreateCanvasForWidget(
       gfx::AcceleratedWidget widget){
-    LOG(ERROR) << "-CreateCanvasForWidget-";
   return make_scoped_ptr<SurfaceOzoneCanvas>(new EglOzoneCanvas());
 }
 
