@@ -13,6 +13,8 @@
 #include "ui/ozone/public/ozone_platform.h"
 #include "egl_wrapper.h"
 
+#include "ui/ozone/common/native_display_delegate_ozone.h"
+
 namespace ui {
 
 namespace {
@@ -72,6 +74,7 @@ class OzonePlatformEgl : public OzonePlatform {
     surface_factory_ozone_.reset(new SurfaceFactoryEgl());
     cursor_factory_ozone_.reset(new CursorFactoryOzone());
     gpu_platform_support_host_.reset(CreateStubGpuPlatformSupportHost());
+    input_controller_ = CreateStubInputController();
   }
 
   virtual void InitializeGPU() override {
@@ -88,6 +91,8 @@ class OzonePlatformEgl : public OzonePlatform {
 
   scoped_ptr<GpuPlatformSupport> gpu_platform_support_;
   scoped_ptr<GpuPlatformSupportHost> gpu_platform_support_host_;
+
+  scoped_ptr<InputController> input_controller_;
   DISALLOW_COPY_AND_ASSIGN(OzonePlatformEgl);
 };
 
