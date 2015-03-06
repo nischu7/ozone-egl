@@ -72,14 +72,16 @@ class OzonePlatformEgl : public OzonePlatform {
    device_manager_ = CreateDeviceManager();
    //event_factory_ozone_.reset(
    //     new EventFactoryEvdev(NULL, device_manager_.get()));
-    surface_factory_ozone_.reset(new SurfaceFactoryEgl());
+    if(!surface_factory_ozone_)
+     surface_factory_ozone_.reset(new SurfaceFactoryEgl());
     cursor_factory_ozone_.reset(new CursorFactoryOzone());
     gpu_platform_support_host_.reset(CreateStubGpuPlatformSupportHost());
     input_controller_ = CreateStubInputController();
   }
 
   void InitializeGPU() override {
-    surface_factory_ozone_.reset(new SurfaceFactoryEgl());
+    if(!surface_factory_ozone_)
+     surface_factory_ozone_.reset(new SurfaceFactoryEgl());
     cursor_factory_ozone_.reset(new CursorFactoryOzone());
     gpu_platform_support_.reset(CreateStubGpuPlatformSupport());
  }
