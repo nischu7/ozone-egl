@@ -37,6 +37,7 @@ class SurfaceFactoryEgl : public ui::SurfaceFactoryOzone {
       SetGLGetProcAddressProcCallback set_gl_get_proc_address) override;
   scoped_ptr<ui::SurfaceOzoneCanvas> CreateCanvasForWidget(
       gfx::AcceleratedWidget widget) override;
+  intptr_t GetNativeWindow();
 
  private:
     bool init_;

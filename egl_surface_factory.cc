@@ -181,6 +181,10 @@ intptr_t SurfaceFactoryEgl::GetNativeDisplay() {
   return (intptr_t)ozone_egl_getNativedisp();
 }
 
+intptr_t SurfaceFactoryEgl::GetNativeWindow(){
+  return (intptr_t)ozone_egl_GetNativeWin();
+}
+
 //gfx::AcceleratedWidget SurfaceFactoryEgl::GetAcceleratedWidget() {
 //  if (!CreateSingleWindow())
 //    LOG(FATAL) << "failed to create window";

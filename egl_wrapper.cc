@@ -66,6 +66,10 @@ void ozone_egl_nativeDestroyDisplay(NativeDisplay display)
     return;
 }
 
+NativeWindowType ozone_egl_GetNativeWin(){
+  return g_NativeWindow;
+}
+
 NativeWindow ozone_egl_nativeCreateWindow(const char *title, int width, int height, EGLint visualId)
 {
     fbdev_window *fbwin =(fbdev_window *) malloc( sizeof(fbdev_window));

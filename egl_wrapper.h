@@ -68,5 +68,6 @@ void ozone_egl_makecurrent();
 int ozone_egl_textureInit (ozone_egl_UserData * userData );
 void ozone_egl_textureDraw ( ozone_egl_UserData *userData );
 void ozone_egl_textureShutDown ( ozone_egl_UserData *userData );
+NativeWindowType ozone_egl_GetNativeWin();
 
 #endif

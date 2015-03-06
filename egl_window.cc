@@ -23,7 +23,8 @@ namespace ui {
        surface_factory_(surface_factory),
        bounds_(bounds) {
    LOG(ERROR) << "-eglWindow::eglWindow-";
-   window_id_ = surface_factory_->CreateSingleWindow();
+   surface_factory_->CreateSingleWindow();
+   window_id_=surface_factory_->GetNativeWindow();
    delegate_->OnAcceleratedWidgetAvailable(window_id_);
  }
  
