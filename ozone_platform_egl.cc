@@ -10,6 +10,8 @@
 #include "ui/ozone/public/gpu_platform_support_host.h"
 #include "ui/events/ozone/device/device_manager.h"
 #include "ui/events/ozone/evdev/event_factory_evdev.h"
+#include "ui/events/ozone/layout/keyboard_layout_engine_manager.h"
+#include "ui/events/ozone/layout/stub/stub_keyboard_layout_engine.h"
 #include "ui/ozone/public/ozone_platform.h"
 #include "egl_wrapper.h"
 
@@ -31,9 +33,10 @@ class OzonePlatformEgl : public OzonePlatform {
   ui::SurfaceFactoryOzone* GetSurfaceFactoryOzone() override {
     return surface_factory_ozone_.get();
   }
-  //virtual EventFactoryOzone* GetEventFactoryOzone() override {
-  //  return event_factory_ozone_.get();
-  //}
+
+  InputController* GetInputController() override {
+    return event_factory_ozone_->input_controller();
+  }
   CursorFactoryOzone* GetCursorFactoryOzone() override {
     return cursor_factory_ozone_.get();
   }
@@ -46,10 +49,7 @@ class OzonePlatformEgl : public OzonePlatform {
 
 /////
   scoped_ptr<SystemInputInjector> CreateSystemInputInjector() override {
-    return nullptr;  // no input injection support.
-  }
-  InputController* GetInputController() override {
-    return input_controller_.get(); // as in test
+    return event_factory_ozone_->CreateSystemInputInjector();
   }
   scoped_ptr<NativeDisplayDelegate> CreateNativeDisplayDelegate() override {
     return scoped_ptr<NativeDisplayDelegate>(new NativeDisplayDelegateOzone());
@@ -57,8 +57,11 @@ class OzonePlatformEgl : public OzonePlatform {
   scoped_ptr<PlatformWindow> CreatePlatformWindow(
       PlatformWindowDelegate* delegate,
       const gfx::Rect& bounds) override {
-      return  make_scoped_ptr<PlatformWindow>(
-        new eglWindow(delegate, surface_factory_ozone_.get(), bounds));
+      scoped_ptr<eglWindow> platform_window(
+        new eglWindow(delegate, surface_factory_ozone_.get(),
+           event_factory_ozone_.get(), bounds));
+      platform_window->Initialize();
+      return platform_window.Pass();
  }
 /////
 
@@ -70,13 +73,15 @@ class OzonePlatformEgl : public OzonePlatform {
 #endif
   void InitializeUI() override {
    device_manager_ = CreateDeviceManager();
-   //event_factory_ozone_.reset(
-   //     new EventFactoryEvdev(NULL, device_manager_.get()));
+    KeyboardLayoutEngineManager::SetKeyboardLayoutEngine(
+        make_scoped_ptr(new StubKeyboardLayoutEngine()));
+    event_factory_ozone_.reset(new EventFactoryEvdev(
+        nullptr, device_manager_.get(),
+        KeyboardLayoutEngineManager::GetKeyboardLayoutEngine()));
     if(!surface_factory_ozone_)
      surface_factory_ozone_.reset(new SurfaceFactoryEgl());
     cursor_factory_ozone_.reset(new CursorFactoryOzone());
     gpu_platform_support_host_.reset(CreateStubGpuPlatformSupportHost());
-    input_controller_ = CreateStubInputController();
   }
 
   void InitializeGPU() override {
@@ -95,7 +100,6 @@ class OzonePlatformEgl : public OzonePlatform {
   scoped_ptr<GpuPlatformSupport> gpu_platform_support_;
   scoped_ptr<GpuPlatformSupportHost> gpu_platform_support_host_;
 
-  scoped_ptr<InputController> input_controller_;
   DISALLOW_COPY_AND_ASSIGN(OzonePlatformEgl);
 };
 

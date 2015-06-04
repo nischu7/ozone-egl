@@ -2,17 +2,24 @@
 #define sghsdjfghfdjkxg
 
 
+#include "ui/events/platform/platform_event_dispatcher.h"
 #include "ui/platform_window/platform_window.h"
 #include "ui/platform_window/platform_window_delegate.h"
 #include "ui/ozone/platform/egl/egl_surface_factory.h"
 
 namespace ui {
 class SurfaceFactoryEgl;
+class EventFactoryEvdev;
 
-class eglWindow : public PlatformWindow {
+class eglWindow : public PlatformWindow, public PlatformEventDispatcher {
  public:
-  eglWindow(PlatformWindowDelegate* delegate,SurfaceFactoryEgl* surface_factory,const gfx::Rect& bounds);
+  eglWindow(PlatformWindowDelegate* delegate,
+          SurfaceFactoryEgl* surface_factory,
+          EventFactoryEvdev* event_factory,
+          const gfx::Rect& bounds);
   ~eglWindow() override;
+
+  void Initialize();
 
   // PlatformWindow:
   gfx::Rect GetBounds() override;
@@ -30,10 +37,14 @@ class eglWindow : public PlatformWindow {
   void MoveCursorTo(const gfx::Point& location) override;
   void ConfineCursorToBounds(const gfx::Rect& bounds) override;
 
+  // PlatformEventDispatcher:
+  bool CanDispatchEvent(const PlatformEvent& event) override;
+  uint32_t DispatchEvent(const PlatformEvent& event) override;
+
  private:
   PlatformWindowDelegate* delegate_;
   //LibeglplatformShimLoader* eglplatform_shim_;
-  //EventFactoryEvdev* event_factory_;
+  EventFactoryEvdev* event_factory_;
   gfx::Rect bounds_;
   //ShimNativeWindowId window_id_;
   SurfaceFactoryEgl* surface_factory_;
