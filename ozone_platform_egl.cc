@@ -5,6 +5,8 @@
 #include "ui/ozone/platform/egl/ozone_platform_egl.h"
 #include "ui/ozone/platform/egl/egl_surface_factory.h"
 
+#include "ui/ozone/common/native_display_delegate_ozone.h"
+#include "ui/ozone/common/stub_overlay_manager.h"
 #include "ui/ozone/public/cursor_factory_ozone.h"
 #include "ui/ozone/public/gpu_platform_support.h"
 #include "ui/ozone/public/gpu_platform_support_host.h"
@@ -13,9 +15,10 @@
 #include "ui/events/ozone/layout/keyboard_layout_engine_manager.h"
 #include "ui/events/ozone/layout/stub/stub_keyboard_layout_engine.h"
 #include "ui/ozone/public/ozone_platform.h"
+#include "ui/ozone/public/system_input_injector.h"
+#include "ui/platform_window/platform_window.h"
+#include "egl_window.h"
 #include "egl_wrapper.h"
-
-#include "ui/ozone/common/native_display_delegate_ozone.h"
 
 namespace ui {
 
@@ -32,6 +35,10 @@ class OzonePlatformEgl : public OzonePlatform {
   // OzonePlatform:
   ui::SurfaceFactoryOzone* GetSurfaceFactoryOzone() override {
     return surface_factory_ozone_.get();
+  }
+
+  OverlayManagerOzone* GetOverlayManager() override {
+    return overlay_manager_.get();
   }
 
   InputController* GetInputController() override {
@@ -62,17 +69,13 @@ class OzonePlatformEgl : public OzonePlatform {
            event_factory_ozone_.get(), bounds));
       platform_window->Initialize();
       return platform_window.Pass();
- }
-/////
-
-#if defined(OS_CHROMEOS)
-  scoped_ptr<NativeDisplayDelegate> CreateNativeDisplayDelegate()
-      override {
-    return scoped_ptr<NativeDisplayDelegate>(new NativeDisplayDelegateOzone());
   }
-#endif
+  base::ScopedFD OpenClientNativePixmapDevice() const override {
+    return base::ScopedFD();
+  }
   void InitializeUI() override {
    device_manager_ = CreateDeviceManager();
+   overlay_manager_.reset(new StubOverlayManager());
     KeyboardLayoutEngineManager::SetKeyboardLayoutEngine(
         make_scoped_ptr(new StubKeyboardLayoutEngine()));
     event_factory_ozone_.reset(new EventFactoryEvdev(
@@ -99,7 +102,7 @@ class OzonePlatformEgl : public OzonePlatform {
 
   scoped_ptr<GpuPlatformSupport> gpu_platform_support_;
   scoped_ptr<GpuPlatformSupportHost> gpu_platform_support_host_;
-
+  scoped_ptr<OverlayManagerOzone> overlay_manager_;
   DISALLOW_COPY_AND_ASSIGN(OzonePlatformEgl);
 };
 

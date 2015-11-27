@@ -41,6 +41,10 @@ class eglWindow : public PlatformWindow, public PlatformEventDispatcher {
   bool CanDispatchEvent(const PlatformEvent& event) override;
   uint32_t DispatchEvent(const PlatformEvent& event) override;
 
+  void SetTitle(const base::string16& title) override {}
+
+  PlatformImeController* GetPlatformImeController() override { return nullptr; }
+
  private:
   PlatformWindowDelegate* delegate_;
   //LibeglplatformShimLoader* eglplatform_shim_;

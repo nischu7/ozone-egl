@@ -25,6 +25,8 @@
         '../gfx/gfx.gyp:gfx',
       ],
       'sources': [
+        'client_native_pixmap_factory_egl.cc',
+        'client_native_pixmap_factory_egl.h',
         'ozone_platform_egl.cc',
         'ozone_platform_egl.h',
         'egl_surface_factory.cc',

@@ -31,7 +31,7 @@ namespace ui {
 
  void eglWindow::Initialize() {
    PlatformEventSource::GetInstance()->AddPlatformEventDispatcher(this);
-   delegate_->OnAcceleratedWidgetAvailable(window_id_);
+   delegate_->OnAcceleratedWidgetAvailable(window_id_, 1.f);
  }
  
  gfx::Rect eglWindow::GetBounds() {
