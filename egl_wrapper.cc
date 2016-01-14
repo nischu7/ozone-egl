@@ -15,6 +15,10 @@
 #include "egl_wrapper.h"
 #include "base/logging.h"
 
+#if defined(EGL_API_BRCM)
+#include "bcm_host.h"
+#endif
+
 typedef NativeDisplayType NativeDisplay;
 typedef intptr_t            NativeWindow;
 typedef void *            NativePixmap;
@@ -53,12 +57,16 @@ static NativeDisplayType g_NativeDisplay= NULL;
 static NativeWindowType g_NativeWindow;
 
 static int g_WindowWidth=0;
-static int g_WindowHeigth=0;
+static int g_WindowHeight=0;
 
 
 NativeDisplay ozone_egl_nativeCreateDisplay(void)
 {
+#if defined(EGL_API_FB)
     return (NativeDisplay)fbGetDisplayByIndex(0);
+#else
+    return EGL_DEFAULT_DISPLAY;
+#endif
 }
 
 void ozone_egl_nativeDestroyDisplay(NativeDisplay display)
@@ -106,7 +114,16 @@ EGLint ozone_egl_setup(EGLint x, EGLint y, EGLint width, EGLint height )
     eglBindAPI(EGL_OPENGL_ES_API);
 
     g_NativeDisplay = (NativeDisplayType)ozone_egl_nativeCreateDisplay();
-    fbGetDisplayGeometry(g_NativeDisplay,&g_WindowWidth,&g_WindowHeigth);
+#if defined(EGL_API_FB)
+    fbGetDisplayGeometry(g_NativeDisplay,&g_WindowWidth,&g_WindowHeight);
+#elif defined(EGL_API_BRCM)
+    uint32_t w = 1280;
+	uint32_t h = 720;
+    if (graphics_get_display_size(0, &w, &h)) {
+        g_WindowWidth = w;
+        g_WindowHeight = h;
+    }
+#endif
 
     g_EglDisplay = eglGetDisplay(g_NativeDisplay);
 
@@ -142,7 +159,38 @@ EGLint ozone_egl_setup(EGLint x, EGLint y, EGLint width, EGLint height )
         return OZONE_EGL_FAILURE;
     }
 
-    g_NativeWindow=fbCreateWindow(g_NativeDisplay, 0, 0, g_WindowWidth, g_WindowHeigth);
+#if defined(EGL_API_FB)
+    g_NativeWindow = fbCreateWindow(g_NativeDisplay, 0, 0, g_WindowWidth, g_WindowHeight);
+#elif defined(EGL_API_BRCM)
+    static EGL_DISPMANX_WINDOW_T dispManWindow;
+    DISPMANX_ELEMENT_HANDLE_T dispmanElement;
+    DISPMANX_DISPLAY_HANDLE_T dispmanDisplay;
+    DISPMANX_UPDATE_HANDLE_T dispmanUpdate;
+    VC_RECT_T dst_rect;
+    VC_RECT_T src_rect;
+
+    dst_rect.x = 0;
+    dst_rect.y = 0;
+    dst_rect.width = g_WindowWidth;
+    dst_rect.height = g_WindowHeight;
+
+    src_rect.x = 0;
+    src_rect.y = 0;
+    src_rect.width = g_WindowWidth << 16;
+    src_rect.height = g_WindowHeight << 16;
+
+    dispmanDisplay = vc_dispmanx_display_open(0);
+    dispmanUpdate = vc_dispmanx_update_start(0);
+
+    dispmanElement = vc_dispmanx_element_add(dispmanUpdate, dispmanDisplay, 0, &dst_rect, 0, &src_rect, DISPMANX_PROTECTION_NONE, 0, 0, DISPMANX_NO_ROTATE);
+
+    dispManWindow.element = dispmanElement;
+    dispManWindow.width = g_WindowWidth;
+    dispManWindow.height = g_WindowHeight;
+    vc_dispmanx_update_submit_sync(dispmanUpdate);
+
+    g_NativeWindow = static_cast<NativeWindowType>(&dispManWindow);
+#endif
 
     g_EglSurface = eglCreateWindowSurface(g_EglDisplay, configs[0], g_NativeWindow, NULL);
     if (g_EglSurface == NULL)
@@ -402,7 +450,7 @@ void ozone_egl_textureDraw ( ozone_egl_UserData *userData)
    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, userData->width, userData->height, userData->colorType, GL_UNSIGNED_BYTE, userData->data); 
       
    // Set the viewport
-   glViewport ( 0, 0, g_WindowWidth, g_WindowHeigth );
+   glViewport ( 0, 0, g_WindowWidth, g_WindowHeight );
    
    // Clear the color buffer
    glClear ( GL_COLOR_BUFFER_BIT );

@@ -4,6 +4,7 @@
 
 {
   'variables': {
+    'use_bcm_host%': 0,
     'internal_ozone_platform_deps': [
       'ozone_platform_egl',
     ],
@@ -44,6 +45,24 @@
               '-lGLESv2',
             ],
       },
+      'conditions': [
+          ['<(use_bcm_host) == 1', {
+              'defines': [
+                  'EGL_API_BRCM',
+              ],
+              'cflags': [
+                  '<!@(pkg-config --cflags bcm_host)',
+              ],
+              'link_settings': {
+                  'ldflags': [
+                      '<!@(pkg-config --libs-only-L --libs-only-other bcm_host)',
+                  ],
+                  'libraries': [
+                      '<!@(pkg-config --libs-only-l bcm_host)',
+                  ],
+              },
+          }],
+      ],
     },
   ],
 }
