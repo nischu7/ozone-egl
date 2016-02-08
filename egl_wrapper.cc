@@ -105,6 +105,10 @@ EGLint ozone_egl_setup(EGLint x, EGLint y, EGLint width, EGLint height )
     EGLint matchingConfigs;
     EGLint err;
 
+#if defined(EGL_API_BRCM)
+    bcm_host_init();
+#endif
+
     EGLint ctxAttribs[] =
     {
         EGL_CONTEXT_CLIENT_VERSION, 2,
@@ -119,25 +123,28 @@ EGLint ozone_egl_setup(EGLint x, EGLint y, EGLint width, EGLint height )
 #elif defined(EGL_API_BRCM)
     uint32_t w = 1280;
 	uint32_t h = 720;
-    if (graphics_get_display_size(0, &w, &h)) {
+    if (graphics_get_display_size(0, &w, &h) >= 0) {
         g_WindowWidth = w;
         g_WindowHeight = h;
-    }
+        LOG(INFO) << "Detected display size: " << w << "x" << h;
+    } else
+        LOG(ERROR) << "Failed to detect display size, using default: " << w << "x" << h;
 #endif
 
     g_EglDisplay = eglGetDisplay(g_NativeDisplay);
-
     if (g_EglDisplay == EGL_NO_DISPLAY)
     {
         LOG(ERROR) << "eglGetDisplay returned EGL_NO_DISPLAY";
         return OZONE_EGL_FAILURE;
     }
 
-    if (!eglInitialize(g_EglDisplay, NULL, NULL))
+    EGLint major, minor;
+    if (!eglInitialize(g_EglDisplay, &major, &minor))
     {
     	LOG(ERROR) << "eglInitialize failed.";
         return OZONE_EGL_FAILURE;
     }
+    LOG(INFO) << "EGL impl. version: " << major << "." << minor;
 
     if (!eglChooseConfig(g_EglDisplay, g_configAttribs, &configs[0],
                          sizeof(configs)/sizeof(configs[0]), &matchingConfigs))

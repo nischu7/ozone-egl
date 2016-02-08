@@ -20,7 +20,6 @@ namespace ui {
        event_factory_(event_factory),
        bounds_(bounds),
        surface_factory_(surface_factory) {
-   LOG(ERROR) << "-eglWindow::eglWindow-";
    surface_factory_->CreateSingleWindow();
    window_id_=surface_factory_->GetNativeWindow();
  }
@@ -35,12 +34,10 @@ namespace ui {
  }
  
  gfx::Rect eglWindow::GetBounds() {
-   LOG(ERROR) << "-eglWindow::GetBounds-";
    return bounds_;
  }
  
  void eglWindow::SetBounds(const gfx::Rect& bounds) {
-   LOG(ERROR) << "-eglWindow::SetBounds-";
    bounds_ = bounds;
    delegate_->OnBoundsChanged(bounds);
  }
