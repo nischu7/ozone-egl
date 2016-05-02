@@ -38,6 +38,12 @@
         'egl_wrapper.h',
         'egl_window.cc',
         'egl_window.h',
+        'desktop_factory_egl.cc',
+        'desktop_factory_egl.h',
+        'desktop_screen_egl.cc',
+        'desktop_screen_egl.h',
+        'desktop_window_tree_host_egl.cc',
+        'desktop_window_tree_host_egl.h',
       ],
       'link_settings': {
             'libraries': [

@@ -19,6 +19,7 @@
 #include "ui/platform_window/platform_window.h"
 #include "egl_window.h"
 #include "egl_wrapper.h"
+#include "desktop_factory_egl.h"
 
 namespace ui {
 
@@ -83,18 +84,21 @@ class OzonePlatformEgl : public OzonePlatform {
         KeyboardLayoutEngineManager::GetKeyboardLayoutEngine()));
     if(!surface_factory_ozone_)
      surface_factory_ozone_.reset(new SurfaceFactoryEgl());
-    cursor_factory_ozone_.reset(new CursorFactoryOzone());
+    if (!cursor_factory_ozone_)
+        cursor_factory_ozone_.reset(new CursorFactoryOzone());
     gpu_platform_support_host_.reset(CreateStubGpuPlatformSupportHost());
   }
 
   void InitializeGPU() override {
     if(!surface_factory_ozone_)
      surface_factory_ozone_.reset(new SurfaceFactoryEgl());
-    cursor_factory_ozone_.reset(new CursorFactoryOzone());
+    if (!cursor_factory_ozone_)
+        cursor_factory_ozone_.reset(new CursorFactoryOzone());
     gpu_platform_support_.reset(CreateStubGpuPlatformSupport());
  }
 
  private:
+  views::DesktopFactoryEgl desktop_factory_ozone_;
   scoped_ptr<DeviceManager> device_manager_;
   scoped_ptr<EventFactoryEvdev> event_factory_ozone_;
   scoped_ptr<SurfaceFactoryEgl> surface_factory_ozone_;
