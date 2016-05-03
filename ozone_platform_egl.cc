@@ -19,7 +19,10 @@
 #include "ui/platform_window/platform_window.h"
 #include "egl_window.h"
 #include "egl_wrapper.h"
+
+#if defined(AURA_VIEWS)
 #include "desktop_factory_egl.h"
+#endif
 
 namespace ui {
 
@@ -98,7 +101,9 @@ class OzonePlatformEgl : public OzonePlatform {
  }
 
  private:
+#if defined(AURA_VIEWS)
   views::DesktopFactoryEgl desktop_factory_ozone_;
+#endif
   scoped_ptr<DeviceManager> device_manager_;
   scoped_ptr<EventFactoryEvdev> event_factory_ozone_;
   scoped_ptr<SurfaceFactoryEgl> surface_factory_ozone_;

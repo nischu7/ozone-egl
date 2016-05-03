@@ -28,46 +28,51 @@
       'sources': [
         'client_native_pixmap_factory_egl.cc',
         'client_native_pixmap_factory_egl.h',
-        'ozone_platform_egl.cc',
-        'ozone_platform_egl.h',
         'egl_surface_factory.cc',
         'egl_surface_factory.h',
-        'ozone_platform_egl.h',
-        'ozone_platform_egl.cc',
-        'egl_wrapper.cc',
-        'egl_wrapper.h',
         'egl_window.cc',
         'egl_window.h',
-        'desktop_factory_egl.cc',
-        'desktop_factory_egl.h',
-        'desktop_screen_egl.cc',
-        'desktop_screen_egl.h',
-        'desktop_window_tree_host_egl.cc',
-        'desktop_window_tree_host_egl.h',
+        'egl_wrapper.cc',
+        'egl_wrapper.h',
+        'ozone_platform_egl.cc',
+        'ozone_platform_egl.h',
+        'ozone_platform_egl.cc',
+        'ozone_platform_egl.h',
       ],
       'link_settings': {
-            'libraries': [
-              '-lEGL',
-              '-lGLESv2',
-            ],
+        'libraries': [
+          '-lEGL',
+          '-lGLESv2',
+        ],
       },
       'conditions': [
-          ['<(use_bcm_host) == 1', {
-              'defines': [
-                  'EGL_API_BRCM',
-              ],
-              'cflags': [
-                  '<!@(pkg-config --cflags bcm_host)',
-              ],
-              'link_settings': {
-                  'ldflags': [
-                      '<!@(pkg-config --libs-only-L --libs-only-other bcm_host)',
-                  ],
-                  'libraries': [
-                      '<!@(pkg-config --libs-only-l bcm_host)',
-                  ],
-              },
-          }],
+        ['use_aura==1 and toolkit_views==1', {
+          'defines': [ 'AURA_VIEWS' ],
+          'sources': [
+            'desktop_factory_egl.cc',
+            'desktop_factory_egl.h',
+            'desktop_screen_egl.cc',
+            'desktop_screen_egl.h',
+            'desktop_window_tree_host_egl.cc',
+            'desktop_window_tree_host_egl.h',
+          ],
+        }],
+        ['<(use_bcm_host) == 1', {
+          'defines': [
+            'EGL_API_BRCM',
+          ],
+          'cflags': [
+            '<!@(pkg-config --cflags bcm_host)',
+          ],
+          'link_settings': {
+            'ldflags': [
+              '<!@(pkg-config --libs-only-L --libs-only-other bcm_host)',
+            ],
+            'libraries': [
+              '<!@(pkg-config --libs-only-l bcm_host)',
+            ],
+          },
+        }],
       ],
     },
   ],
