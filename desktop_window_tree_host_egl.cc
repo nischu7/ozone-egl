@@ -128,7 +128,7 @@ void DesktopWindowTreeHostOzone::OnNativeWidgetCreated(const Widget::InitParams&
     if (!params.child && params.parent)
         wm::AddTransientChild(parent, content_window_);
 
-#if defined(ENABLE_HBBTV) && ENABLE_HBBTV
+#if defined(ENABLE_HBBTV) && ENABLE_HBBTV && !defined(EGL_API_BRCM)
      compositor()->SetHostHasTransparentBackground(true);
      window()->SetTransparent(true);
      content_window_->SetTransparent(true);
