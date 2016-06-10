@@ -1,7 +1,7 @@
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
-#include "ui/ozone/platform/egl/egl_surface_factory.h"
+#include "ozone-egl/platform/egl_surface_factory.h"
 #include "third_party/skia/include/core/SkBitmap.h"
 #include "third_party/skia/include/core/SkCanvas.h"
 #include "third_party/skia/include/core/SkSurface.h"
@@ -109,9 +109,8 @@ class OzoneEgl : public ui::SurfaceOzoneEGL {
     return true;
   }
 
-  bool OnSwapBuffersAsync(const SwapCompletionCallback& callback) override
+  void OnSwapBuffersAsync(const SwapCompletionCallback& callback) override
   { 
-    return true; 
   }
 
   bool ResizeNativeWindow(const gfx::Size& viewport_size) override {
@@ -121,6 +120,10 @@ class OzoneEgl : public ui::SurfaceOzoneEGL {
 
   scoped_ptr<gfx::VSyncProvider> CreateVSyncProvider() override {
     return scoped_ptr<gfx::VSyncProvider>();
+  }
+
+  void* GetEGLSurfaceConfig(const ui::EglConfigCallbacks&) override {
+    return nullptr;
   }
 
  private:
@@ -205,10 +208,10 @@ bool SurfaceFactoryEgl::LoadEGLGLES2Bindings(
   //return false;
 }
 
-const int32* SurfaceFactoryEgl::GetEGLSurfaceProperties(
-    const int32* desired_list) {
-  return ozone_egl_getConfigAttribs();
-}
+//const int32* SurfaceFactoryEgl::GetEGLSurfaceProperties(
+//    const int32* desired_list) {
+//  return ozone_egl_getConfigAttribs();
+//}
 
 scoped_ptr<ui::SurfaceOzoneCanvas> SurfaceFactoryEgl::CreateCanvasForWidget(
       gfx::AcceleratedWidget widget){

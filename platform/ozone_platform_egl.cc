@@ -2,8 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "ui/ozone/platform/egl/ozone_platform_egl.h"
-#include "ui/ozone/platform/egl/egl_surface_factory.h"
+#include "ozone-egl/platform/ozone_platform_egl.h"
+#include "ozone-egl/platform/egl_surface_factory.h"
 
 #include "ui/ozone/common/native_display_delegate_ozone.h"
 #include "ui/ozone/common/stub_overlay_manager.h"
@@ -68,11 +68,11 @@ class OzonePlatformEgl : public OzonePlatform {
   scoped_ptr<PlatformWindow> CreatePlatformWindow(
       PlatformWindowDelegate* delegate,
       const gfx::Rect& bounds) override {
-      scoped_ptr<eglWindow> platform_window(
+      scoped_ptr<eglWindow> platformWindow(
         new eglWindow(delegate, surface_factory_ozone_.get(),
            event_factory_ozone_.get(), bounds));
-      platform_window->Initialize();
-      return platform_window.Pass();
+      platformWindow->Initialize();
+      return std::move(platformWindow);
   }
   base::ScopedFD OpenClientNativePixmapDevice() const override {
     return base::ScopedFD();

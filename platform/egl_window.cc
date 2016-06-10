@@ -1,4 +1,4 @@
-#include "ui/ozone/platform/egl/egl_window.h"
+#include "ozone-egl/platform/egl_window.h"
 
 #include "base/bind.h"
 #include "ui/events/devices/device_data_manager.h"
@@ -73,7 +73,8 @@ namespace ui {
  }
  
  void eglWindow::MoveCursorTo(const gfx::Point& location) {
-   event_factory_->WarpCursorTo(window_id_, location);
+   //event_factory_->WarpCursorTo(window_id_, location);
+   event_factory_->WarpCursorTo(window_id_, gfx::PointF(location));
  }
  
  void eglWindow::ConfineCursorToBounds(const gfx::Rect& bounds) {

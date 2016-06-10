@@ -7,7 +7,7 @@
 
 #include "base/memory/scoped_ptr.h"
 #include "ui/ozone/public/surface_factory_ozone.h"
-#include "ui/ozone/platform/egl/egl_window.h"
+#include "ozone-egl/platform/egl_window.h"
 
 
 namespace gfx {
@@ -30,8 +30,8 @@ class SurfaceFactoryEgl : public ui::SurfaceFactoryOzone {
   //virtual gfx::AcceleratedWidget GetAcceleratedWidget() override;
   scoped_ptr<ui::SurfaceOzoneEGL> CreateEGLSurfaceForWidget(
       gfx::AcceleratedWidget widget) override;
-  const int32* GetEGLSurfaceProperties(
-      const int32* desired_list) override;
+//  const int32* GetEGLSurfaceProperties(
+//      const int32* desired_list) override;
   bool LoadEGLGLES2Bindings(
       AddGLLibraryCallback add_gl_library,
       SetGLGetProcAddressProcCallback set_gl_get_proc_address) override;
