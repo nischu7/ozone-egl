@@ -5,19 +5,13 @@
 {
   'variables': {
     'use_bcm_host%': 0,
-    'internal_ozone_platform_deps': [
-      'ozone_platform_egl',
-    ],
-    'internal_ozone_platforms': [
-      'egl'
-    ],
   },
   'targets': [
     {
       'target_name': 'ozone_platform_egl',
       'type': 'static_library',
       'defines': [
-        'OZONE_IMPLEMENTATION',
+        'OZONE_EGL_IMPLEMENTATION',
       ],
       'dependencies': [
         '<(DEPTH)/base/base.gyp:base',
